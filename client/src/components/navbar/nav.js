@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import clsx from "clsx";
 
 import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Drawer,
   IconButton,
   List,
@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  CssBaseline,
 } from "@material-ui/core";
 import {
   Menu,
@@ -22,6 +23,7 @@ import {
   Apps,
   Settings,
   Info,
+  ChevronLeft,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -33,12 +35,24 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  hide: {
+    display: "none",
   },
   toolbar: {
     justifyContent: "space-between",
-  },
-  title: {
-    marginLeft: "20px",
   },
   drawer: {
     width: drawerWidth,
@@ -47,21 +61,42 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end",
+  },
 }));
 
 export default function Nav() {
   const classes = useStyles();
+  const [open, setOpen] = useState(true); // make part of redux state?
+  const toggleMenu = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
       <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, { [classes.appBarShift]: open })}
+        >
           <Toolbar className={classes.toolbar}>
-            <IconButton color="inherit" aria-label="open drawer" edge="start">
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={toggleMenu}
+              className={clsx(open && classes.hide)}
+            >
               <Menu />
             </IconButton>
-            <Typography variant="h5" className={classes.title}>
-              Quantum
-            </Typography>
+            <Typography variant="h5">Quantum</Typography>
             <div>
               <span>log out</span>
               <IconButton color="inherit" aria-label="dark mode" edge="end">
@@ -74,11 +109,17 @@ export default function Nav() {
           container="true"
           variant="persistent"
           anchor="left"
-          open={true}
+          open={open}
           className={classes.drawer}
           classes={{ paper: classes.drawerPaper }}
         >
-          <Toolbar />
+          <div className={classes.drawerHeader}>
+            <IconButton onClick={toggleMenu}>
+              <ChevronLeft />
+            </IconButton>
+          </div>
+          {/* <Toolbar /> */}
+          <Divider />
           <List>
             <ListItem button>
               <ListItemIcon>
