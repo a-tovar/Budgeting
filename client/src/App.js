@@ -1,5 +1,7 @@
 import React from "react";
+import { Provider } from "react-redux";
 
+import store from "./store";
 import Nav from "./components/navbar/nav";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -23,11 +25,13 @@ const theme = createMuiTheme({
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <Nav></Nav>
-      <div>
-        <Toolbar />
-        content
-      </div>
+      <Provider store={store}>
+        <Nav></Nav>
+        <div>
+          <Toolbar />
+          content
+        </div>
+      </Provider>
     </MuiThemeProvider>
   );
 }
