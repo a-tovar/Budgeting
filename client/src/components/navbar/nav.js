@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
+// import * as actions from "../../reducers/index";
+import { toggleMenu, toggleTheme } from "../../reducers/pageStateReducer";
 import clsx from "clsx";
 
 import {
@@ -27,7 +30,7 @@ import {
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
-const drawerWidth = 240;
+const drawerWidth = 240; // TODO: make this some kind of global shiz
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,11 +74,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Nav() {
+function Nav(props) {
   const classes = useStyles();
-  const [open, setOpen] = useState(true); // make part of redux state?
   const toggleMenu = () => {
-    setOpen(!open);
+    props.toggleMenu();
+  };
+  const toggleTheme = () => {
+    props.toggleTheme();
   };
 
   return (
@@ -84,7 +89,9 @@ export default function Nav() {
         <CssBaseline />
         <AppBar
           position="fixed"
-          className={clsx(classes.appBar, { [classes.appBarShift]: open })}
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: props.menuOpen,
+          })}
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -92,14 +99,19 @@ export default function Nav() {
               aria-label="open drawer"
               edge="start"
               onClick={toggleMenu}
-              className={clsx(open && classes.hide)}
+              className={clsx(props.menuOpen && classes.hide)}
             >
               <Menu />
             </IconButton>
             <Typography variant="h5">Quantum</Typography>
             <div>
               <span>log out</span>
-              <IconButton color="inherit" aria-label="dark mode" edge="end">
+              <IconButton
+                color="inherit"
+                aria-label="dark mode"
+                edge="end"
+                onClick={toggleTheme}
+              >
                 <BrightnessMedium />
               </IconButton>
             </div>
@@ -109,7 +121,7 @@ export default function Nav() {
           container="true"
           variant="persistent"
           anchor="left"
-          open={open}
+          open={props.menuOpen}
           className={classes.drawer}
           classes={{ paper: classes.drawerPaper }}
         >
@@ -167,3 +179,19 @@ export default function Nav() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    menuOpen: state.pageState.menuOpen,
+    darkMode: state.pageState.darkMode,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleMenu: () => dispatch(toggleMenu()),
+    toggleTheme: () => dispatch(toggleTheme()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

@@ -1,39 +1,47 @@
 import React from "react";
-import { Provider } from "react-redux";
+import { connect } from "react-redux";
 
-import store from "./store";
 import Nav from "./components/navbar/nav";
+import Test from "./components/budget/test";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Toolbar } from "@material-ui/core";
 import "./App.css";
 
-const theme = createMuiTheme({
-  palette: {
-    // type: "dark",
-    primary: {
-      main: "#99f2d4",
-      dark: "#2f4454",
+function App(props) {
+  const theme = createMuiTheme({
+    palette: {
+      type: props.darkMode ? "dark" : "light",
+      primary: {
+        main: "#99f2d4",
+        dark: "#2f4454",
+      },
+      secondary: {
+        main: "#edf5e1",
+        dark: "#2e151b",
+      },
     },
-    secondary: {
-      main: "#edf5e1",
-      dark: "#2e151b",
-    },
-  },
-});
+  });
 
-function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <Nav></Nav>
-        <div>
-          <Toolbar />
-          content
-        </div>
-      </Provider>
+      <Nav></Nav>
+      <div>
+        <Toolbar />
+        <Test></Test>
+      </div>
     </MuiThemeProvider>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    darkMode: state.pageState.darkMode,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
