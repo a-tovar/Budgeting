@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import Nav from "./components/navbar/nav";
-import Test from "./components/budget/test";
+import IdealBudget from "./components/budget/idealBudget";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Toolbar } from "@material-ui/core";
@@ -28,7 +28,7 @@ function App(props) {
       <Nav></Nav>
       <div>
         <Toolbar />
-        <Test></Test>
+        <IdealBudget></IdealBudget>
       </div>
     </MuiThemeProvider>
   );

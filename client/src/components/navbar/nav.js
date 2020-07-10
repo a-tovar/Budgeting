@@ -29,8 +29,7 @@ import {
   ChevronLeft,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-
-const drawerWidth = 240; // TODO: make this some kind of global shiz
+import { menuDrawerWidth } from "../../constants/styleConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    width: `calc(100% - ${menuDrawerWidth}px)`,
+    marginLeft: menuDrawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -58,11 +57,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   drawer: {
-    width: drawerWidth,
+    width: menuDrawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: menuDrawerWidth,
   },
   drawerHeader: {
     display: "flex",
