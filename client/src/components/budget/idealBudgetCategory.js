@@ -1,59 +1,100 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 
+import { withStyles } from "@material-ui/core/styles";
 import {
+  FormControl,
   TextField,
   Select,
   MenuItem,
   InputLabel,
   InputAdornment,
+  Button,
 } from "@material-ui/core";
 
-function IdealBudgetCategory(props) {
-  const categories = ["Bills", "Food", "Transportation", "Home", "Shopping"];
+const styles = theme => {
+  return {
+    form: {
+      display: "flex",
+      padding: theme.spacing(2),
+      // margin: theme.spacing(2),
+      // marginTop: theme.spacing(3),
+      justifyContent: 'space-between'
+    },
+    formControl: {
+      display: 'flex',
+      maxWidth: 400,
+      minWidth: 150
+    }
+  }
+};
 
-  const [values, updateValues] = useState({
-    category: "",
-    amount: 0,
-  });
+class IdealBudgetCategory extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      category: props.category,
+      id: this.props.id,
+    }
+  };
 
-  const handleChange = (prop) => (e) => {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    this.setState({ category: nextProps.category });  
+  }
+
+  categories = ["Bills", "Food", "Transportation", "Home", "Shopping"];
+
+  handleChange = (prop) => (e) => {
     if (!e.target.value || (prop === "amount" && e.target.value < 0)) {
       e.target.value = 0;
       // TODO: remove possibility of leading zeros
     }
-    const newValues = { ...values, [prop]: e.target.value };
-    updateValues(newValues);
-    let index = e.target.name;
-    props.valueCallback(index, newValues);
+    const newValues = { ...this.state.category, [prop]: e.target.value };
+    this.setState(state => ({
+      category: newValues
+    }));
+    this.props.valueCallback(newValues);
   };
 
-  return (
-    <>
-      <InputLabel id="category">Category</InputLabel>
-      <Select
-        labelId="category"
-        onChange={handleChange("category")}
-        value={values.category}
-        name={props.num}
-      >
-        {categories.map((category) => (
-          <MenuItem value={category} key={category}>
-            {category}
-          </MenuItem>
-        ))}
-      </Select>
-      <TextField
-        label="Amount"
-        type="number"
-        value={values.amount}
-        name={props.num}
-        onChange={handleChange("amount")}
-        InputProps={{
-          startAdornment: <InputAdornment position="start">$</InputAdornment>,
-        }}
-      ></TextField>
-    </>
-  );
+  delCategory = () => {
+    let id = this.props.num;
+    this.props.delCategory(id);
+  }
+
+  render() {
+    const {classes} = this.props;
+
+    return (
+      <div className={classes.form}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="category">Category</InputLabel>
+          <Select
+            labelId="category"
+            onChange={this.handleChange("category")}
+            value={this.state.category.category}
+          >
+            {this.categories.map((category) => (
+              <MenuItem value={category} key={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <TextField
+            label="Amount"
+            type="number"
+            value={this.state.category.amount}
+            onChange={this.handleChange("amount")}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+            }}
+          ></TextField>
+          <Button onClick={this.delCategory}>remove</Button>
+        </FormControl>
+      </div>
+    );
+  }
 }
 
-export default IdealBudgetCategory;
+
+export default withStyles(styles, {name: 'IdealBudgetCategory'})(IdealBudgetCategory);

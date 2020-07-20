@@ -17,8 +17,8 @@ function App(props) {
         dark: "#2f4454",
       },
       secondary: {
-        main: "#edf5e1",
-        dark: "#2e151b",
+        main: "#b39ddb",
+        dark: "#5e35b1",
       },
     },
   });

@@ -2,7 +2,7 @@ export const MENU_TOGGLE = "pageState/MENU_TOGGLE";
 export const THEME_TOGGLE = "pageState/THEME_TOGGLE";
 
 const initialState = {
-  menuOpen: true,
+  menuOpen: false,
   darkMode: false,
 };
 
