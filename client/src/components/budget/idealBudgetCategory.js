@@ -9,7 +9,9 @@ import {
   InputLabel,
   InputAdornment,
   Button,
+  IconButton,
 } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
 
 const styles = theme => {
   return {
@@ -21,10 +23,12 @@ const styles = theme => {
       justifyContent: 'space-between'
     },
     formControl: {
-      display: 'flex',
       maxWidth: 400,
       minWidth: 150
-    }
+    },
+    inline: {
+      display: 'inline-block',
+    },
   }
 };
 
@@ -37,6 +41,7 @@ class IdealBudgetCategory extends Component {
     }
   };
 
+  // TODO: figure out how to do this properly
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ category: nextProps.category });  
   }
@@ -46,7 +51,10 @@ class IdealBudgetCategory extends Component {
   handleChange = (prop) => (e) => {
     if (!e.target.value || (prop === "amount" && e.target.value < 0)) {
       e.target.value = 0;
-      // TODO: remove possibility of leading zeros
+    }
+    // remove possibility of leading zeros
+    if (prop === 'amount') {
+      e.target.value = +e.target.value;
     }
     const newValues = { ...this.state.category, [prop]: e.target.value };
     this.setState(state => ({
@@ -79,18 +87,22 @@ class IdealBudgetCategory extends Component {
             ))}
           </Select>
         </FormControl>
-        <FormControl className={classes.formControl}>
-          <TextField
-            label="Amount"
-            type="number"
-            value={this.state.category.amount}
-            onChange={this.handleChange("amount")}
-            InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
-            }}
-          ></TextField>
-          <Button onClick={this.delCategory}>remove</Button>
-        </FormControl>
+        <div className={classes.inline}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              label="Amount"
+              type="number"
+              value={this.state.category.amount}
+              onChange={this.handleChange("amount")}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              }}
+            ></TextField>
+          </FormControl>
+          <IconButton onClick={this.delCategory}>
+            <Close/>
+          </IconButton>
+        </div>
       </div>
     );
   }
