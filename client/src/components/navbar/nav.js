@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 // import * as actions from "../../reducers/index";
-import { toggleMenu, toggleTheme } from "../../reducers/pageStateReducer";
+import { toggleMenu, toggleTheme } from "../../store/pageState/pageStateReducer";
 import clsx from "clsx";
 
 import {

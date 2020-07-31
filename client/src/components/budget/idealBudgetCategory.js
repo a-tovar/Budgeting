@@ -8,7 +8,6 @@ import {
   MenuItem,
   InputLabel,
   InputAdornment,
-  Button,
   IconButton,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
@@ -18,8 +17,6 @@ const styles = theme => {
     form: {
       display: "flex",
       padding: theme.spacing(2),
-      // margin: theme.spacing(2),
-      // marginTop: theme.spacing(3),
       justifyContent: 'space-between'
     },
     formControl: {
@@ -41,11 +38,6 @@ class IdealBudgetCategory extends Component {
     }
   };
 
-  // TODO: figure out how to do this properly
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({ category: nextProps.category });  
-  }
-
   categories = ["Bills", "Food", "Transportation", "Home", "Shopping"];
 
   handleChange = (prop) => (e) => {
@@ -60,7 +52,7 @@ class IdealBudgetCategory extends Component {
     this.setState(state => ({
       category: newValues
     }));
-    this.props.valueCallback(newValues);
+    this.props.editCallback(newValues);
   };
 
   delCategory = () => {
