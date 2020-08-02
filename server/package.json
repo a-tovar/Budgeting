@@ -5,13 +5,14 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
+    "server": "nodemon server.js --prefix server",
+    "client": "npm start --prefix client\\src",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "concurrently": "^5.2.0",
     "config": "^3.3.1",
     "cors": "^2.8.5",
