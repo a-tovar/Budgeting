@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import compose from 'recompose/compose';
+import compose from "recompose/compose";
 
 import {
   addCategory,
   editCategory,
   deleteCategory,
-} from '../../store/idealBudget/idealBudgetReducer';
+} from "../../store/idealBudget/idealBudgetReducer";
 
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -20,7 +20,7 @@ import {
   Grid,
   Paper,
   Typography,
-  Box
+  Box,
 } from "@material-ui/core";
 import { MoreVert, Add, TripOrigin } from "@material-ui/icons";
 import clsx from "clsx";
@@ -37,10 +37,10 @@ const styles = (theme) => {
     rootMenuOpen: {
       display: "block",
       marginLeft: menuDrawerWidth,
-      padding: theme.spacing(2)
+      padding: theme.spacing(2),
     },
     paper: {
-      margin: 'auto',
+      margin: "auto",
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(3),
       paddingBottom: theme.spacing(2),
@@ -51,25 +51,25 @@ const styles = (theme) => {
     },
     addButton: {
       marginTop: theme.spacing(-1),
-      float: 'right',
+      float: "right",
       marginRight: theme.spacing(10),
       backgroundColor: theme.palette.primary.main,
-      boxShadow: '2'
+      boxShadow: "2",
     },
     flexContainer: {
       maxWidth: 300,
       padding: theme.spacing(0.5),
-      display: 'flex',
-      justifyContent: 'space-between',
+      display: "flex",
+      justifyContent: "space-between",
     },
     hidden: {
-      display: 'none',
+      display: "none",
     },
     vertAlign: {
-      marginTop: 'auto',
-      marginBottom: 'auto',
-    }
-  }
+      marginTop: "auto",
+      marginBottom: "auto",
+    },
+  };
 };
 
 class IdealBudget extends Component {
@@ -78,8 +78,8 @@ class IdealBudget extends Component {
     this.state = {
       total: 0,
       anchorEl: 0,
-    }
-  };
+    };
+  }
 
   editCallback = (data) => {
     this.props.editCategory(data);
@@ -101,8 +101,8 @@ class IdealBudget extends Component {
 
   delCategory = (id) => {
     this.props.deleteCategory(id);
-    this.calcTotal(this.props.categories.filter(cat => cat.id !== id));
-  }
+    this.calcTotal(this.props.categories.filter((cat) => cat.id !== id));
+  };
 
   colors = ["79C7E3", "12939A", "1A3177", "FF9833", "EF5D28"];
   valuesToRadial = () => {
@@ -121,21 +121,23 @@ class IdealBudget extends Component {
   chartOptions = ["Radial Chart", "Treemap", "Sunburst"];
   chartOptionsOpen = () => {
     return Boolean(this.state.anchorEl);
-  }
+  };
   openChartOptions = (e) => {
     this.setState({ anchorEl: e.currentTarget });
   };
   closeChartOptions = (e) => {
-    this.setState({ anchorEl: null })
+    this.setState({ anchorEl: null });
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     return (
       <>
         <div
-          className={clsx(this.props.menuOpen ? classes.rootMenuOpen : classes.root)}
+          className={clsx(
+            this.props.menuOpen ? classes.rootMenuOpen : classes.root
+          )}
         >
           <Card>
             <CardHeader
@@ -183,16 +185,36 @@ class IdealBudget extends Component {
                     // labelsRadiusMultiplier={2}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} className={clsx(this.state.total ? null : classes.hidden)}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  className={clsx(this.state.total ? null : classes.hidden)}
+                >
                   {this.props.categories.map((category, index) => (
-                      <div className={clsx(category.amount ? classes.flexContainer : classes.hidden)} key={category.id}>
-                        <div className={classes.flexContainer}>
-                          <TripOrigin style={{color: this.colors[index], marginRight: '5px'}}/>
-                          <Typography>{category.category}:</Typography>
-                        </div>
-                        <Typography className={classes.vertAlign}>{(category.amount / this.state.total * 100).toFixed(1)}%</Typography>
+                    <div
+                      className={clsx(
+                        category.amount ? classes.flexContainer : classes.hidden
+                      )}
+                      key={category.id}
+                    >
+                      <div className={classes.flexContainer}>
+                        <TripOrigin
+                          style={{
+                            color: this.colors[index],
+                            marginRight: "5px",
+                          }}
+                        />
+                        <Typography>{category.category}:</Typography>
                       </div>
-                    ))}
+                      <Typography className={classes.vertAlign}>
+                        {((category.amount / this.state.total) * 100).toFixed(
+                          1
+                        )}
+                        %
+                      </Typography>
+                    </div>
+                  ))}
                 </Grid>
               </Grid>
             </CardContent>
@@ -200,26 +222,26 @@ class IdealBudget extends Component {
           <Paper className={classes.paper}>
             {this.props.categories.map((category, index) => (
               <IdealBudgetCategory
-              key={index.toString()}
-              num={category.id}
-              category={category}
-              editCallback={this.editCallback}
-              delCategory={this.delCategory}
+                key={index.toString()}
+                num={category.id}
+                category={category}
+                editCallback={this.editCallback}
+                delCategory={this.delCategory}
               />
             ))}
             <Box boxShadow={2}>
               <IconButton
                 onClick={this.addCategory}
-                color='secondary'
+                color="secondary"
                 className={classes.addButton}
-                >
+              >
                 <Add />
               </IconButton>
             </Box>
           </Paper>
         </div>
       </>
-    )
+    );
   }
 }
 
@@ -234,17 +256,17 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => 
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addCategory,
       editCategory,
       deleteCategory,
     },
-    dispatch,
+    dispatch
   );
 
 export default compose(
-  withStyles(styles, {name: 'IdealBudget'}),
+  withStyles(styles, { name: "IdealBudget" }),
   connect(mapStateToProps, mapDispatchToProps)
 )(IdealBudget);

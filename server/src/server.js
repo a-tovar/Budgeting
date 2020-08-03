@@ -21,11 +21,11 @@ mongoose
   .catch((err) => console.log(err));
 
 // use routes
-const users = require('./routes/api/users');
-const defaultCategories = require('./routes/api/defaultCategories');
+const users = require("./routes/api/users");
+const defaultCategories = require("./routes/api/defaultCategories");
 
-app.use('/api/users', users);
-app.use('/api/defaultCategories', defaultCategories);
+app.use("/api/users", users);
+app.use("/api/defaultCategories", defaultCategories);
 
 const port = process.env.PORT || 5000;
 
